@@ -1,7 +1,7 @@
 package org.example;
 
-import java.util.List;
-
+import java.util.HashSet;
+import java.util.Set;
 
 public class HomeWork {
 
@@ -24,8 +24,48 @@ public class HomeWork {
      * Сигнатуру метода не меняем
      */
     public String findMaxSubstring(String str) {
-        //TODO реализовать метод
-        return null;
+        if (str == null) {
+            throw new NullPointerException("Нельзя передавать null");
+        }
+
+        String maxString = "";
+        if (str.isEmpty()) {
+            return maxString;
+        }
+
+        int maxLength = 0;
+        String maxSubstring = "";
+        int currentLength = 0;
+
+        for (int i = 0; i < str.length() - 1; i++) {
+            char currentChar = str.charAt(i);
+            char nextChar = str.charAt(i + 1);
+            if (currentChar == nextChar) {
+                if (maxSubstring.length() >= maxString.length()) {
+                    maxString = maxSubstring + currentChar;
+                }
+                currentLength = 0;
+                maxSubstring = "";
+            } else {
+                currentLength++;
+                maxLength = Math.max(currentLength, maxLength);
+                maxSubstring += currentChar;
+                if (maxSubstring.length() > maxString.length()) {
+                    maxString = maxSubstring;
+                }
+            }
+        }
+
+        var lastChar = str.charAt(str.length() - 1);
+        if (str.charAt(str.length() - 2) == lastChar) {
+            maxString = maxSubstring + lastChar;
+        } else {
+            maxSubstring += lastChar;
+            if (maxSubstring.length() > maxString.length()) {
+                maxString = maxSubstring;
+            }
+        }
+        return maxString;
     }
 
 
@@ -39,8 +79,22 @@ public class HomeWork {
      * Given a string, detect whether or not it is a pangram. Return True if it is, False if not. Ignore numbers and punctuation.
      * @see <a href="https://www.codewars.com/kata/545cedaa9943f7fe7b000048">https://www.codewars.com/kata/545cedaa9943f7fe7b000048</a>
      */
-    public boolean check(String sentence){
-        return false;
+    public boolean check(String sentence) {
+        if (sentence == null) {
+            throw new NullPointerException("Нельзя передавать null");
+        }
+
+        if (sentence.isEmpty()) {
+            return false;
+        }
+
+        Set<Character> uniqueChars = new HashSet<>();
+        for (char ch : sentence.toLowerCase().replaceAll("\\d|\\s", "").toCharArray()) {
+            if (ch >= 'a' && ch <= 'z') {
+                uniqueChars.add(ch);
+            }
+        }
+        return uniqueChars.size() == 26;
     }
 
 }
